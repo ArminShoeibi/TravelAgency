@@ -1,8 +1,13 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 
-namespace TravelAgency.Shared
+/// <summary>
+/// We recommended that apps follow the naming convention of creating extension methods in the Microsoft.Extensions.DependencyInjection namespace.
+/// Creating extension methods in the Microsoft.Extensions.DependencyInjection namespace:
+///  1) Encapsulates groups of service registrations.
+///  2)Provides convenient IntelliSense access to the service.
+/// </summary>
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

@@ -16,15 +16,15 @@ namespace TravelAgency.API.RpcServices
         private readonly IConnection _amqpConnection;
         private readonly IModel _amqpChannel;
         private readonly IBasicProperties _basicProperties;
-        private readonly AsyncEventingBasicConsumer ticketStatusResponseConsumer;
-        private readonly BlockingCollection<TicketStatusResponse> ticketStatusResponseQueue;
+        private readonly AsyncEventingBasicConsumer _ticketStatusResponseConsumer;
+        private readonly BlockingCollection<TicketStatusResponse> _ticketStatusResponseQueue;
 
         public TicketStatusService(IConnection amqpConnection, ILogger<TicketStatusService> logger)
         {
             _logger = logger;
-            ticketStatusResponseQueue = new();
+            _ticketStatusResponseQueue = new();
 
-            _amqpConnection = amqpConnection;
+           
             _amqpChannel = _amqpConnection.CreateModel();
 
             _basicProperties = _amqpChannel.CreateBasicProperties();
@@ -32,16 +32,16 @@ namespace TravelAgency.API.RpcServices
 
             _amqpChannel.AddExchangeAndQueueForTicketStatus();
 
-            ticketStatusResponseConsumer = new(_amqpChannel);
-            ticketStatusResponseConsumer.Received += async (sender, ea) =>
+            _ticketStatusResponseConsumer = new(_amqpChannel);
+            _ticketStatusResponseConsumer.Received += async (sender, ea) =>
             {
                 await Task.Delay(1);
                 TicketStatusResponse ticketStatusResponse = TicketStatusResponse.Parser.ParseFrom(ea.Body.ToArray());
                 string ticketStatusResponseAsJson = JsonSerializer.Serialize(ticketStatusResponse);
                 _logger.LogInformation($"Response Received: {ticketStatusResponseAsJson}");
-                ticketStatusResponseQueue.Add(ticketStatusResponse);
+                _ticketStatusResponseQueue.Add(ticketStatusResponse);
             };
-            _amqpChannel.BasicConsume(_basicProperties.ReplyTo, true, ticketStatusResponseConsumer);
+            _amqpChannel.BasicConsume(_basicProperties.ReplyTo, true, _ticketStatusResponseConsumer);
 
         }
 
@@ -49,7 +49,7 @@ namespace TravelAgency.API.RpcServices
         {
             var ticketStatusRequestBytes = ticketStatusRequest.ToByteArray();
             _amqpChannel.BasicPublish(ExchangeName.TicketStatusRequest.ToString(), "", _basicProperties, ticketStatusRequestBytes);
-            return ticketStatusResponseQueue.Take();
+            return _ticketStatusResponseQueue.Take();
         }
     }
 }
