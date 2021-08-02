@@ -17,16 +17,13 @@ namespace TravelAgency.API.RpcServices
         private readonly IModel _amqpChannel;
         private readonly IBasicProperties _basicProperties;
         private readonly AsyncEventingBasicConsumer _ticketStatusResponseConsumer;
-        private readonly BlockingCollection<TicketStatusResponse> _ticketStatusResponseQueue;
+        private readonly BlockingCollection<TicketStatusResponse> _ticketStatusResponseQueue = new();
 
         public TicketStatusService(IConnection amqpConnection, ILogger<TicketStatusService> logger)
         {
             _logger = logger;
-            _ticketStatusResponseQueue = new();
-
-           
+            _amqpConnection = amqpConnection;
             _amqpChannel = _amqpConnection.CreateModel();
-
             _basicProperties = _amqpChannel.CreateBasicProperties();
             _basicProperties.ReplyTo = "amq.rabbitmq.reply-to";
 
