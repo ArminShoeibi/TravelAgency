@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+option csharp_namespace = "TravelAgency.ProtocolBuffers";
+import "google/protobuf/timestamp.proto";
+
+enum TicketStatusCategory {
+	NONE = 0;
+	FLOWN = 1;
+	OPEN_FOR_USE = 2;
+	REFUNDED = 3;
+}
+
+message TicketStatusRequest {
+  string p_n_r = 1;
+  string ticket_number = 2;
+}
+message TicketStatusResponse {
+  TicketStatusRequest ticket_status_request = 1;
+  TicketStatusCategory ticket_status_category = 2;
+  google.protobuf.Timestamp date_created = 3;
+}

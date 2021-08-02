@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>dotnet-TravelAgency.Providers.IranAir-2FE61343-7FCA-480B-B964-52F7908FF04D</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelAgency.Shared\TravelAgency.Shared.csproj" />
+  </ItemGroup>
+</Project>
