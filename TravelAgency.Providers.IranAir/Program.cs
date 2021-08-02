@@ -21,7 +21,7 @@ namespace TravelAgency.Providers.IranAir
                So in consumer apps such as Consoles or Worker services you should have these 3 lines of codes per consumer.
             */
             IModel iranAirTicketStatusChannel = amqpConnection.CreateModel();
-            var IranAirTicketStatusRequestConsumer = 
+            TicketStatusRequestConsumer IranAirTicketStatusRequestConsumer = 
                 ActivatorUtilities.CreateInstance<TicketStatusRequestConsumer>(serviceProvider, iranAirTicketStatusChannel);
             iranAirTicketStatusChannel.BasicConsume(QueueName.TicketStatusRequest.ToString(), true, IranAirTicketStatusRequestConsumer);
 

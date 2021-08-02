@@ -2,6 +2,6 @@
 {
     public enum ExchangeName
     {
-        TicketStatusRequest
+        TicketStatusRequest = 1
     }
 }
