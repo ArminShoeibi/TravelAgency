@@ -12,7 +12,7 @@ namespace TravelAgency.Shared.RabbitMQ
             */
             string ticketStatusExchange = ExchangeName.TicketStatusRequest.ToString();
             string ticketStatusQueue = ExchangeName.TicketStatusRequest.ToString();
-            amqpChannel.ExchangeDeclare(ticketStatusExchange, ExchangeType.Direct, true, false);
+            amqpChannel.ExchangeDeclare(ticketStatusExchange, ExchangeType.Fanout, true, false);
             amqpChannel.QueueDeclare(ticketStatusQueue, true, false, false);
             amqpChannel.QueueBind(ticketStatusQueue, ticketStatusExchange, "");
         }
