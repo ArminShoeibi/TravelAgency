@@ -18,20 +18,21 @@ namespace TravelAgency.Tests
             List<Task> tasks = new();
             for (int i = 1; i <= 50; i++)
             {
-                var tempIndex = i;
+                var tempIndex = i.ToString();
                 var t = Task.Run(async () =>
                 {
                     TicketStatusRequest ticketStatusRequest = new()
                     {
-                        PNR = $"PNR:{tempIndex}",
-                        TicketNumber = $"TicketNumber:{tempIndex}"
+                        PNR = tempIndex,
+                        TicketNumber = tempIndex
                     };
                     var ticketStatusRequestAsJson = JsonSerializer.Serialize(ticketStatusRequest);
-                    Console.WriteLine(ticketStatusRequestAsJson);
+                    //Console.WriteLine(ticketStatusRequestAsJson);
 
                     var ticketStatusRequestHttp = await httpClient.PostAsJsonAsync("api/TicketStatus", ticketStatusRequest);
                     var ticketStatusResponse = await ticketStatusRequestHttp.Content.ReadFromJsonAsync<TicketStatusResponse>();
                     var ticketStatusResponseAsJson = JsonSerializer.Serialize(ticketStatusResponse);
+                 
                     Console.WriteLine($"{ticketStatusRequestAsJson}++{ticketStatusResponseAsJson}");
                 });
                 tasks.Add(t);

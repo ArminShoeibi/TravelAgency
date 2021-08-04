@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using TravelAgency.API.RpcServices;
 using TravelAgency.ProtocolBuffers;
 
@@ -16,9 +17,9 @@ namespace TravelAgency.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetTicketStatus(TicketStatusRequest ticketStatusRequest)
+        public async Task<IActionResult> GetTicketStatus(TicketStatusRequest ticketStatusRequest)
         {
-            TicketStatusResponse ticketStatusResponse = _ticketStatusService.GetTicketStatus(ticketStatusRequest);
+            TicketStatusResponse ticketStatusResponse = await _ticketStatusService.GetTicketStatus(ticketStatusRequest);
             return Ok(ticketStatusResponse);
         }
     }
